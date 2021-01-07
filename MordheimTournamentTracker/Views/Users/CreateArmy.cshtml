@@ -1,0 +1,125 @@
+﻿@model MordheimTournamentTracker.Models.AddUserArmyView
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <style>
+        {
+            box-sizing: border-box;
+        }
+
+        .column {
+            float: left;
+            padding: 10px;
+        }
+
+        .navigational {
+            width: 20%;
+        }
+
+        .informational {
+            width: 40%;
+        }
+
+        .list {
+            width: 20%
+        }
+
+        .row::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+    <title>Opret Armé</title>
+</head>
+<body>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+
+<div class="column navigational">
+    <p>
+        @Html.ActionLink("Tilbage til din forside", "Dashboard")
+    </p>
+    <p>
+        @Html.ActionLink("Dine Armer", "UserArmies")
+    </p>
+    <p>
+        @Html.ActionLink("Log Ud", "Login")
+    </p>
+</div>
+    <div class="column informational">
+        @using (Html.BeginForm()) {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <h4>Army</h4>
+                <hr />
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AvailableGames, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.SelectedGame, Model.AvailableGames, "Vælg Spil", new { @id = "Games" })
+                        @Html.ValidationMessageFor(model => model.AvailableGames, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AvailableArmyTypes, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.SelectedArmyType, new List<SelectListItem>(), "-- Vælg Armé -- ", new { @id = "Armies" })
+                        @Html.ValidationMessageFor(model => model.AvailableArmyTypes, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Raiting, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Raiting, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Raiting, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Opret" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#Games').change(function () {
+                $.ajax({
+                    type: "post",
+                    url: "/Users/GetAvailableArmyTypes",
+                    data: { gameId: $('#Games').val() },
+                    dataType: "json",
+                    traditional: true,
+                    success: function (data) {
+                        var armies = "<select id='Armies'>";
+                        armies += '<option value="">-- Vælg Armé --</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            armies += '<option value=' + data[i].Value + '>' + data[i].Text + '</option>'; 
+                        }
+                        armies += '</select>';
+                        $('#Armies').html(armies);
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+</html>

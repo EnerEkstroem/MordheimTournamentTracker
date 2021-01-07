@@ -1,0 +1,125 @@
+﻿@model MordheimTournamentTracker.Models.UserDashboardModelView
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <style>
+        {
+            box-sizing: border-box;
+        }
+
+        .column {
+            float: left;
+            padding: 10px;
+        }
+
+        .navigational {
+            width: 20%;
+        }
+
+        .informational {
+            width: 40%;
+        }
+
+        .list {
+            width: 20%
+        }
+
+        .row::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+    <title>Dashboard</title>
+</head>
+<body>
+    <div>
+        <h4>Velkommen @Html.Label(Model.LoggedInUser)</h4>
+        <hr />
+        <dl class="dl-horizontal">
+        </dl>
+    </div>
+    <div class="row">
+        <div class="column navigational">
+            <p>
+                @Html.ActionLink("Rediger dine oplysninger", "Edit")
+            </p>
+            <p>
+                @Html.ActionLink("Dine Armer", "UserArmies")
+            </p>
+            <p>
+                @Html.ActionLink("Udfordre en Spiller", "IssueChallenge", "Challenges")
+            </p>
+            <p>
+                <hr />
+            </p>
+            <p>
+                @Html.ActionLink("Dine Kampe", "UserMatches", "Matches")
+            </p>
+            <p>
+                @Html.ActionLink("Klubbens Kampe", "AllMatches", "Matches")
+            </p>
+            <p>
+                <hr />
+            </p>
+            <p>
+                @Html.ActionLink("Opret Spil", "Create", "Games")
+            </p>
+            <p>
+                @Html.ActionLink("Tilføj Hær", "AddArmyType", "Games")
+            </p>
+            <p>
+                @Html.ActionLink("Log Ud", "Login")
+            </p>
+        </div>
+        <div class="column informational">
+
+        </div>
+        @if (Model.IncommingChallenges.Count > 0) {
+            <div class="column list">
+                <table>
+                    <thead>
+                        <tr> Udstående Udfordringer</tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var challenge in Model.IncommingChallenges) {
+                            <tr>
+                                <td>@Html.ActionLink(challenge.Name, "Details" , "Challenges", new { id = challenge.Id }, null)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        }
+        <div class="column list">
+            @if (Model.UpcommingMatches.Count < 1) {
+                <p> Du har ingen planlagte kampe hvad med at @Html.ActionLink("udfordre en kammerat", "IssueChallenge", "Challenges")</p>
+            }
+            else {
+                <table>
+                    <thead>
+                        <tr>Kommende Kampe</tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var match in Model.UpcommingMatches) {
+                            <tr>
+                                <td>
+                                    @Html.ActionLink(match.Name, "Details", "Matches", new { id = match.Id }, null)
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+
+</body>
+</html>

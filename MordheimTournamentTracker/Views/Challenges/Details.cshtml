@@ -1,0 +1,118 @@
+﻿@model MordheimTournamentTrackerModel.Models.Challenge
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+    <style>
+        {
+            box-sizing: border-box;
+        }
+
+        .column {
+            float: left;
+            padding: 10px;
+        }
+
+        .navigational {
+            width: 20%;
+        }
+
+        .informational {
+            width: 40%;
+        }
+
+        .row::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="column navigational">
+            <p>
+                 @Html.ActionLink("Tilbage til din forside", "Dashboard", "Users")
+            </p>
+            <p>
+                @Html.ActionLink("Log ud", "Login", "Users")
+            </p>
+        </div>
+        <div class="column informational">
+            <h4>@Html.DisplayFor(model => model.Name)</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.ShowDown)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.ShowDown)
+                </dd>
+            </dl>
+            <div class="row">
+                <div class="column">
+                    <dl>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Challenger)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Challenger.Name)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Challenger.Type)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Challenger.Type.Name)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Challenger.Raiting)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Challenger.Raiting)
+                        </dd>
+                    </dl>
+                </div>
+                <div class="column">
+                    <dl>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Challengee)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Challengee.Name)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Challengee.Type)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Challengee.Type.Name)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Challengee.Raiting)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Challengee.Raiting)
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <p>
+                @using (Html.BeginForm()) {
+                    @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <input type="submit" name="answer" value="Accepter" class="btn btn-default" /> |
+                    <input type="submit" name="answer" value="Afslå" class="btn btn-default" />
+                </div>
+                }
+            </p>
+        </div>
+    </div>
+</body>
+</html>

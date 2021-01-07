@@ -1,0 +1,92 @@
+﻿@model IEnumerable<MordheimTournamentTrackerModel.Models.Match>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AllMatches</title>
+    <style>
+        {
+            box-sizing: border-box;
+        }
+
+        .column {
+            float: left;
+            padding: 10px;
+        }
+
+        .navigational {
+            width: 20%;
+        }
+
+        .informational {
+            width: 40%;
+        }
+
+        .row::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="column navigational">
+            <p>
+                @Html.ActionLink("Tilbage til din forside","Dashboard", "Users")
+            </p>
+            <p>
+                @Html.ActionLink("Log ud", "Login","Users")
+            </p>
+        </div>
+        <div class="column informational">
+            <table class="table">
+                <tr>
+                    <th>
+                        Udfordrer
+                    </th>
+                    <th>
+                        Udfordrede
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Date)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Resolved)
+                    </th>
+                    <th>
+                        Vinder
+                    </th>
+                </tr>
+
+                @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArmyOne.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArmyTwo.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @(item.Resolved?"Ja":"Nej")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Winner)
+                </td>
+            </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</body>
+</html>

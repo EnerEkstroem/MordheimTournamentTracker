@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MordheimTournamentTrackerModel.Models {
-    class User {
+    public class User {
         public int Id { get; set; } //ID for Entity Framework
         [DisplayName("Bruger Navn")]
         public string UserName { get; set; }

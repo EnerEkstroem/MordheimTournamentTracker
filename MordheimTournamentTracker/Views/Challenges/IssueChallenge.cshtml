@@ -1,0 +1,155 @@
+﻿@model MordheimTournamentTracker.Models.IssueChallengeModelView
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Udsted Udfordring</title>
+    <style>
+        {
+            box-sizing: border-box;
+        }
+
+        .column {
+            float: left;
+            padding: 10px;
+        }
+
+        .navigational {
+            width: 20%;
+        }
+
+        .informational {
+            width: 40%;
+        }
+
+        .list {
+            width: 20%
+        }
+
+        .row::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="column navigational">
+            <p>
+                @Html.ActionLink("Tilbage til din forside", "Dashboard", "Users")
+            </p>
+            <p>
+                @Html.ActionLink("Log Ud", "Login", "Users")
+            </p>
+        </div>
+        <div class="column informational">
+            @using (Html.BeginForm()) {
+                @Html.AntiForgeryToken()
+                <div class="form">
+                    <div class="row">
+                        <div class="column">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.AvailableGames, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                @Html.DropDownListFor(model => model.SelectedGame, Model.AvailableGames, "Vælg Spil", new { @id = "Games" })
+                                @Html.ValidationMessageFor(model => model.AvailableGames, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ShowDown, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                @Html.TextBoxFor(model => model.ShowDown, new { @class = "date-picker" })
+                                @Html.ValidationMessageFor(model => model.ShowDown, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class=" column">
+                            <div class="form-group">
+                                @Html.Label("Vælg din armé")
+                                <div>
+                                    @Html.ListBoxFor(model => model.ChallengingArmy, new List<SelectListItem>(), new { @id = "Attackers", size = 10 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="form-group">
+                                @Html.Label("Vælg din modstander")
+                                <div>
+                                    @Html.ListBoxFor(model => model.DefendingArmy, new List<SelectListItem>(), new { @id = "Defenders", size = 10 })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <input type="submit" value="Send udfordring" class="btn btn-default" />
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+    <!-- jQuery UI CSS Reference -->
+    <link href="@Url.Content("~/Content/themes/base/minified/jquery-ui.min.css")" rel="stylesheet" />
+    <!-- Required jQuery and jQuery UI Javascript references -->
+    <script src="@Url.Content("~/Scripts/jquery-3.5.1.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('.date-picker').datepicker();
+        })
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#Games').change(function () {
+                $.ajax({
+                    type: "post",
+                    url: "/Challenges/GetUserArmiesForGame",
+                    data: { gameId: $('#Games').val() },
+                    dataType: "json",
+                    traditional: true,
+                    success: function (data) {
+                        var armies = "<select id='Attackers'>";
+                        for (var i = 0; i < data.length; i++) {
+                            armies += '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                        }
+                        armies += '</select>';
+                        $('#Attackers').html(armies);
+                    }
+                })
+            })
+        })
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#Games').change(function () {
+                $.ajax({
+                    type: "post",
+                    url: "/Challenges/GetPossibleOpponentsInGame",
+                    data: { gameId: $('#Games').val() },
+                    dataType: "json",
+                    traditional: true,
+                    success: function (data) {
+                        var armies = "<select id='Defenders'>";
+                        for (var i = 0; i < data.length; i++) {
+                            armies += '<option value=' + data[i].Value + '>' + data[i].Text + '</option>';
+                        }
+                        armies += '</select>';
+                        $('#Defenders').html(armies);
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+</html>

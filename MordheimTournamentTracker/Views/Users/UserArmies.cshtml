@@ -1,0 +1,99 @@
+﻿@model IEnumerable<MordheimTournamentTrackerModel.Models.Army>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <style>
+        {
+            box-sizing: border-box;
+        }
+
+        .column {
+            float: left;
+            padding: 10px;
+        }
+
+        .navigational {
+            width: 20%;
+        }
+
+        .informational {
+            width: 40%;
+        }
+
+        .row::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+    <title>Dine Armeer</title>
+</head>
+<body>
+    <div>
+        Her er en oversigt over dine Arméer
+        <hr />
+    </div>
+    <div class="column navigational">
+        <p>@Html.ActionLink("Tilbage til din forside","Dashboard")</p>
+        <p>@Html.ActionLink("Log ud","login")</p>
+    </div>
+    <div class="column informational">
+    @if (Model.Count() < 1) {
+        <p>
+            Du har ingen arméer, hvorfor ikke @Html.ActionLink("lave en", "CreateArmy")
+        </p>
+    }
+    else {
+        <p>
+            @Html.ActionLink("Lav en ny", "CreateArmy")
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    Arméer
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Game)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Type)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Raiting)
+                </th>
+            </tr>
+
+            @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Game.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Raiting)
+                    </td>
+                </tr>
+            }
+
+        </table>
+    }
+        </div>
+</body>
+</html>

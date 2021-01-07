@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MordheimTournamentTrackerModel.Models {
-    class Army : IEquatable<Army> {
+    public class Army : IEquatable<Army>, IComparable<Army> {
         public int Id { get; set; } //ID for Entity Framework
         private User _owner;
         [DisplayName("Ejer")]
@@ -37,6 +37,10 @@ namespace MordheimTournamentTrackerModel.Models {
                 // Nah, we want to keep a record of who owned an army in old tournament records even if it is retired
             }
             _owner = null;
+        }
+
+        public int CompareTo(Army other) {
+            return other.Raiting - Raiting;
         }
     }
 }
