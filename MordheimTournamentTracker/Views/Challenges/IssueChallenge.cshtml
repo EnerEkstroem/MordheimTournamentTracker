@@ -106,7 +106,9 @@
     <script src="@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")"></script>
     <script type="text/javascript">
         $(function () {
-            $('.date-picker').datepicker();
+            $('.date-picker').datepicker({
+                dateFormat: 'dd-mm-yy',
+            });
         })
     </script>
     <script type="text/javascript">
